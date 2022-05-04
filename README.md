@@ -1,4 +1,4 @@
 # CPU_Design
 # Datapath
 
-![alt text](https://pasteboard.co/DBH78KFo5cvF.jpg)
+![alt text](https://i.postimg.cc/JhZGj4Pb/Datpath.jpg)
