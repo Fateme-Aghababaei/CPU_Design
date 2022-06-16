@@ -6,7 +6,10 @@ import java.util.Scanner;
 public class Main {
     static StringBuilder sb = new StringBuilder();
 
+    static StringBuilder tmp = new StringBuilder();
+
     public static void main(String[] args) throws FileNotFoundException {
+        sb.append("v2.0 raw\n");
         File myObj = new File("input.txt");
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine()) {
@@ -56,19 +59,41 @@ public class Main {
     }
 
     static void rType(String rd, String rs, String rt, String fn) {
-        sb.append("0").append(registerNumber(rs)).append(registerNumber(rt)).append(registerNumber(rd)).append(Integer.toHexString(Integer.parseInt(fn))).append("\n");
+        tmp.setLength(0);
+        String rdformat = String.format("%04d", Integer.parseInt(registerNumber(rd)));
+        String rsformat = String.format("%04d", Integer.parseInt(registerNumber(rs)));
+        String rtformat = String.format("%04d", Integer.parseInt(registerNumber(rt)));
+        String fnformat = String.format("%06d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(fn))));
+        tmp.append("000000").append(rsformat).append(rtformat).append(rdformat).append(fnformat);
+        sb.append(binaryToHex(String.valueOf(tmp))).append("\n");
     }
 
     static void iType(String opc, String rt, String rs, String data) {
-        sb.append(Integer.toHexString(Integer.parseInt(opc))).append(registerNumber(rs)).append(registerNumber(rt)).append(Integer.toHexString(Integer.parseInt(data))).append("\n");
+        tmp.setLength(0);
+        String opformat = String.format("%06d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(opc))));
+        String rsformat = String.format("%04d", Integer.parseInt(registerNumber(rs)));
+        String rtformat = String.format("%04d", Integer.parseInt(registerNumber(rt)));
+        String dtformat = String.format("%010d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(data))));
+        tmp.append(opformat).append(rsformat).append(rtformat).append(dtformat);
+        sb.append(binaryToHex(String.valueOf(tmp))).append("\n");
     }
 
     static void jType(String opc, String label) {
-        sb.append(Integer.toHexString(Integer.parseInt(opc))).append(Integer.toHexString(Integer.parseInt(label))).append("\n");
+        tmp.setLength(0);
+        String opformat = String.format("%06d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(opc))));
+        String dtformat = String.format("%018d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(label))));
+        tmp.append(opformat).append(dtformat);
+        sb.append(binaryToHex(String.valueOf(tmp))).append("\n");
     }
 
     static String registerNumber(String r) {
         String i = String.valueOf(r.charAt(1));
-        return Integer.toHexString(Integer.parseInt(i));
+        return Integer.toBinaryString(Integer.parseInt(i));
+    }
+
+    private static String binaryToHex(String binary) {
+        int number;
+        number = Integer.parseInt(binary, 2);
+        return Integer.toHexString(number);
     }
 }
